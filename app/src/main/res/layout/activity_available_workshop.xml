@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.kesar.workshop.AvailableWorkshop">
+
+    <include
+        android:id="@+id/workshop_toolbar"
+        layout="@layout/app_bar_layout" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/workshop_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/add_workshop_btn">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <Button
+        android:id="@+id/add_workshop_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/workshop_toolbar"
+        android:text="ADD WORKSHOP"
+        android:gravity="center"
+        android:layout_margin="20dp"
+        android:backgroundTint="#000000"
+        android:textColor="#ffffff"/>
+
+</RelativeLayout>
