@@ -53,7 +53,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     private String CREATE_WORKSHOP_TABLE = "CREATE TABLE " + TABLE_WORKSHOP + "(" + COLUMN_WORKSHOP_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_WORKSHOP_NAME + " TEXT," + COLUMN_WORKSHOP_COLLEGE_NAME + " TEXT," + COLUMN_WORKSHOP_LOCATION + " TEXT," + COLUMN_WORKSHOP_DATE + " TEXT" + ");";
 
     //Create user_workshop table sql query
-    private String CREATE_USER_WORKSHOP_TABLE = "CREATE TABLE " + TABLE_USER_WORKSHOP + "(" + COLUMN_USER_WORKSHOP_ID + " INTEGER," + COLUMN_WORKSHOP_USER_ID + " INTEGER," + " PRIMARY KEY (" + COLUMN_USER_WORKSHOP_ID + " , " + COLUMN_WORKSHOP_USER_ID + ")" + ");";
+    private String CREATE_USER_WORKSHOP_TABLE = "CREATE TABLE " + TABLE_USER_WORKSHOP + "(" + COLUMN_USER_WORKSHOP_ID + " TEXT," + COLUMN_WORKSHOP_USER_ID + " INTEGER," + " PRIMARY KEY (" + COLUMN_USER_WORKSHOP_ID + " , " + COLUMN_WORKSHOP_USER_ID + ")" + ");";
 
     //Drop USER Table SQL Query
     private String DROP_USER_TABLE = "DROP TABLE IF EXISTS" + TABLE_USER;
@@ -63,6 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     //Drop user workshop table sql query
     private String DROP_USER_WORKSHOP_TABLE = "DROP TABLE IF EXISTS" + TABLE_USER_WORKSHOP;
+    public String session;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -215,6 +216,62 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         }
 
         cursor.close();
+        db.close();
+
+        return workshopList;
+
+    }
+
+    //method to get user workshop
+
+    public List<DashboardWorkshop> getUserWorkshop(String session) {
+
+        String [] columns = {
+                COLUMN_WORKSHOP_USER_ID
+        };
+
+        String [] columns_next = {
+                COLUMN_WORKSHOP_ID,
+                COLUMN_WORKSHOP_NAME,
+                COLUMN_WORKSHOP_COLLEGE_NAME,
+                COLUMN_WORKSHOP_LOCATION,
+                COLUMN_WORKSHOP_DATE
+        };
+
+        List<DashboardWorkshop> workshopList = new ArrayList<DashboardWorkshop>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selection = COLUMN_USER_WORKSHOP_ID + " = ?";
+
+        String [] selectionArgs = {session};
+
+        String selection_next = COLUMN_WORKSHOP_ID + " = ?";
+
+        Cursor cursor = db.query(TABLE_USER_WORKSHOP, columns, selection, selectionArgs, null, null, null);
+
+        String [] selectionArgsNext = new String[]{cursor.toString()};
+
+        Cursor cursor_next = db.query(TABLE_WORKSHOP, columns_next, selection_next, selectionArgsNext, null, null, null);
+
+        if(cursor.moveToFirst()) {
+
+            do {
+
+                DashboardWorkshop dashboardWorkshop = new DashboardWorkshop();
+                dashboardWorkshop.setWorkshop_id(Integer.parseInt(cursor_next.getString(cursor_next.getColumnIndex(COLUMN_WORKSHOP_ID))));
+                dashboardWorkshop.setWorkshop_name(cursor_next.getString(cursor_next.getColumnIndex(COLUMN_WORKSHOP_NAME)));
+                dashboardWorkshop.setCollege_name(cursor_next.getString(cursor_next.getColumnIndex(COLUMN_WORKSHOP_COLLEGE_NAME)));
+                dashboardWorkshop.setLocation(cursor_next.getString(cursor_next.getColumnIndex(COLUMN_WORKSHOP_LOCATION)));
+                dashboardWorkshop.setDate(cursor_next.getString(cursor_next.getColumnIndex(COLUMN_WORKSHOP_DATE)));
+
+                workshopList.add(dashboardWorkshop);
+
+            } while(cursor_next.moveToNext());
+
+        }
+
+        cursor.close();
+        cursor_next.close();
         db.close();
 
         return workshopList;

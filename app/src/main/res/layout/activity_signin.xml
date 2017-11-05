@@ -70,14 +70,28 @@
 
     <Button
         android:id="@+id/signin_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="20dp"
         android:layout_marginTop="5dp"
         android:backgroundTint="@color/colorPrimary"
         android:text="Sign in"
+        android:layout_marginLeft="20dp"
         android:textColor="@android:color/white"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signin_password" />
+
+    <Button
+        android:id="@+id/signin_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:background="@null"
+        android:layout_marginLeft="20dp"
+        android:text="Create Account ? Sign up"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signin_btn" />
 
 </android.support.constraint.ConstraintLayout>

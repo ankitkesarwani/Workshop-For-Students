@@ -9,6 +9,10 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
@@ -27,6 +31,8 @@ public class AvailableWorkshop extends AppCompatActivity implements View.OnClick
     private WorkshopRecyclerAdapter workshopRecyclerAdapter;
     private DatabaseHelper databaseHelper;
 
+    protected String session;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +41,8 @@ public class AvailableWorkshop extends AppCompatActivity implements View.OnClick
         mToolbar = (Toolbar) findViewById(R.id.workshop_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Workshops");
+
+        session = getIntent().getStringExtra("session");
 
         initViews();
         initListeners();
@@ -59,7 +67,7 @@ public class AvailableWorkshop extends AppCompatActivity implements View.OnClick
     private void initObjects() {
 
         listWorkshop = new ArrayList<>();
-        workshopRecyclerAdapter = new WorkshopRecyclerAdapter(listWorkshop);
+        workshopRecyclerAdapter = new WorkshopRecyclerAdapter(listWorkshop, session);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mWorkshopList.setLayoutManager(mLayoutManager);
@@ -109,6 +117,40 @@ public class AvailableWorkshop extends AppCompatActivity implements View.OnClick
             }
 
         }.execute();
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.workshop_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        super.onOptionsItemSelected(item);
+
+        if (item.getItemId() == R.id.workshop_dashboard) {
+
+            if (!TextUtils.isEmpty(session)) {
+
+                Intent workshopIntent = new Intent(AvailableWorkshop.this, MainActivity.class);
+                startActivity(workshopIntent);
+
+            } else {
+
+                Intent workshopIntent = new Intent(AvailableWorkshop.this, Signin.class);
+                startActivity(workshopIntent);
+
+            }
+
+        }
+
+        return true;
 
     }
 

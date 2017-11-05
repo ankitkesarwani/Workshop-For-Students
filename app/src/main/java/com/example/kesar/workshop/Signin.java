@@ -24,6 +24,8 @@ public class Signin extends AppCompatActivity implements View.OnClickListener{
 
     private Button mSigninBtn;
 
+    private Button mSigninRegisterBtn;
+
     private DatabaseHelper mDatabaseHelper;
 
     private ProgressDialog mSigninProgress;
@@ -50,12 +52,14 @@ public class Signin extends AppCompatActivity implements View.OnClickListener{
         mPassword = (TextInputLayout)findViewById(R.id.signin_password);
 
         mSigninBtn = (Button) findViewById(R.id.signin_btn);
+        mSigninRegisterBtn = (Button) findViewById(R.id.signin_register);
 
     }
 
     private void initListeners() {
 
         mSigninBtn.setOnClickListener(this);
+        mSigninRegisterBtn.setOnClickListener(this);
 
     }
 
@@ -74,6 +78,9 @@ public class Signin extends AppCompatActivity implements View.OnClickListener{
             case R.id.signin_btn:
                 verifyFromSQLite();
                 break;
+            case R.id.signin_register:
+                Intent registerIntent = new Intent(Signin.this, Register.class);
+                startActivity(registerIntent);
 
         }
 
